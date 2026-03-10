@@ -23,20 +23,16 @@ Chart.lock
 .nx/workspace-data
 
 screenshots
+# Devenv
+.devenv*
+devenv.local.nix
 
-.env
+# direnv
 .direnv
 
 .pre-commit-config.yaml
-
-# mise
-.mise.lock
-.mise.local.toml
-
-# yarn
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+/terraform/eks/default/keys/*
+/terraform/eks/default/.terraform
+/terraform/eks/default/.terraform.lock.hcl
+/terraform/eks/default/.terraform.tfstate
+/terraform/eks/default/.terraform.tfstate.backup
