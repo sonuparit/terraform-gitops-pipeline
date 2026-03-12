@@ -3,28 +3,28 @@
 # =============================================================================
 
 terraform {
-  required_version = ">= 1.0"
+  required_version = "${var.terraform_version}"
   
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 5.0"
+      version = "${var.aws_provider_version}"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = ">= 2.0"
+      version = "${var.helm_version}"
     }
     kubectl = {
       source  = "gavinbunney/kubectl"
-      version = ">= 1.14"
+      version = "${var.kubectl_version}"
     }
     time = {
       source  = "hashicorp/time"
-      version = ">= 0.9"
+      version = "${var.time_version}"
     }
     random = {
       source  = "hashicorp/random"
-      version = ">= 3.0"
+      version = "${var.random_version}"
     }
   }
 }

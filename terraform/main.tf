@@ -1,14 +1,10 @@
 # =============================================================================
-# MAIN INFRASTRUCTURE RESOURCES
-# =============================================================================
-
-# =============================================================================
 # VPC CONFIGURATION
 # =============================================================================
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
+  version = var.vpc_module_version
 
   name = "${var.cluster_name}-vpc"
   cidr = var.vpc_cidr
@@ -49,7 +45,7 @@ module "vpc" {
 
 module "retail_app_eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.31"
+  version = var.aws_module_version
 
   # Basic cluster configuration
   cluster_name    = local.cluster_name
@@ -80,3 +76,4 @@ module "retail_app_eks" {
 
   tags = local.common_tags
 }
+

@@ -30,10 +30,10 @@ resource "helm_release" "argocd" {
       # Server configuration
       server = {
         service = {
-          type = "ClusterIP"
+          type = "LoadBalancer"
         }
         ingress = {
-          enabled = false  # We'll use port-forward for access
+          enabled = true  # We'll not use port-forward for access
         }
         # Enable insecure mode for easier local access
         extraArgs = [

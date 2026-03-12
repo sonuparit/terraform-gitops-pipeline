@@ -28,11 +28,11 @@ locals {
   
   # Common tags applied to all resources
   common_tags = {
-    Environment   = var.environment
-    Project       = "retail-store"
-    ManagedBy     = "terraform"
-    CreatedBy     = "Sonuparit"
-    Owner         = data.aws_caller_identity.current.user_id
+    Environment   = "${var.environment}"
+    Project       = "${var.project_name}"
+    ManagedBy     = "${var.manage_by}"
+    CreatedBy     = "${var.created_by}"
+    Owner         = "${data.aws_caller_identity.current.user_id}"
     CreatedDate   = formatdate("YYYY-MM-DD", timestamp())
   }
   
