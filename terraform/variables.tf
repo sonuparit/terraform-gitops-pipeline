@@ -8,12 +8,6 @@ variable "project_name" {
   default     = "retail-store"
 }
 
-variable "aws_module_version" {
-  description = "AWS module version"
-  type        = string
-  default     = "21.15.1"
-}
-
 variable "aws_region" {
   description = "AWS region where resources will be created"
   type        = string
