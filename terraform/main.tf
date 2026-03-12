@@ -45,7 +45,7 @@ module "vpc" {
 
 module "retail_app_eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "21.15.1"
+  version = "~> 20.31"
 
   # Basic cluster configuration
   cluster_name    = local.cluster_name
