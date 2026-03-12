@@ -20,12 +20,6 @@ variable "aws_region" {
   default     = "ap-south-1"
 }
 
-variable "vpc_module_version" {
-  description = "Version to use for VPC"
-  type        = string
-  default     = "6.6.0"
-}
-
 variable "cluster_name" {
   description = "Name of the EKS cluster"
   type        = string
