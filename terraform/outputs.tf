@@ -94,6 +94,11 @@ output "argocd_admin_password" {
 # APPLICATION ACCESS
 # =============================================================================
 
+output "ingress_nginx_loadbalancer" {
+  description = "Command to get the LoadBalancer URL for accessing applications"
+  value       = "kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'"
+}
+
 output "retail_store_url" {
   description = "Command to get the retail store application URL"
   value       = "echo 'http://'$(kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"

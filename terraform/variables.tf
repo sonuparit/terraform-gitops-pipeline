@@ -2,16 +2,10 @@
 # INPUT VARIABLES
 # =============================================================================
 
-variable "project_name" {
-  description = "Name of the project"
-  type        = string
-  default     = "retail-store"
-}
-
 variable "aws_region" {
   description = "AWS region where resources will be created"
   type        = string
-  default     = "ap-south-1"
+  default     = "us-west-2"
 }
 
 variable "cluster_name" {
@@ -29,7 +23,7 @@ variable "environment" {
 variable "kubernetes_version" {
   description = "Kubernetes version for EKS cluster"
   type        = string
-  default     = "1.35.0"
+  default     = "1.33"
 }
 
 variable "vpc_cidr" {
@@ -47,7 +41,7 @@ variable "argocd_namespace" {
 variable "argocd_chart_version" {
   description = "ArgoCD Helm chart version"
   type        = string
-  default     = "9.4.9"
+  default     = "5.51.6"
 }
 
 variable "enable_single_nat_gateway" {
@@ -60,16 +54,4 @@ variable "enable_monitoring" {
   description = "Enable monitoring stack (Prometheus, Grafana)"
   type        = bool
   default     = false
-}
-
-variable "manage_by" {
-  description = "Manager of Project"
-  type        = string
-  default     = "terraform"
-}
-
-variable "created_by" {
-  description = "Creator of project"
-  type        = string
-  default     = "Sonu Parit"
 }

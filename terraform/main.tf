@@ -1,4 +1,8 @@
 # =============================================================================
+# MAIN INFRASTRUCTURE RESOURCES
+# =============================================================================
+
+# =============================================================================
 # VPC CONFIGURATION
 # =============================================================================
 
@@ -7,7 +11,7 @@ module "vpc" {
   version = "~> 5.0"
 
   name = "${var.cluster_name}-vpc"
-  cidr = "${var.vpc_cidr}"
+  cidr = var.vpc_cidr
 
   azs             = local.azs
   public_subnets  = local.public_subnets
@@ -76,4 +80,3 @@ module "retail_app_eks" {
 
   tags = local.common_tags
 }
-
