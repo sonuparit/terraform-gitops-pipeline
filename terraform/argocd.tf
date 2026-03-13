@@ -35,6 +35,7 @@ resource "helm_release" "argocd" {
         ingress = {
           enabled = false  # We'll use port-forward for access
         }
+      }
         # Enable insecure mode for easier local access
       configs = {
         params = {
