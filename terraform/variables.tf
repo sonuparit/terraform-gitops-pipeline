@@ -5,7 +5,7 @@
 variable "aws_region" {
   description = "AWS region where resources will be created"
   type        = string
-  default     = "ap-south-1"
+  default     = "us-west-2"
 }
 
 variable "cluster_name" {
