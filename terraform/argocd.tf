@@ -4,7 +4,7 @@
 
 # Wait for the cluster and add-ons to be ready
 resource "time_sleep" "wait_for_cluster" {
-  create_duration = "30s"
+  create_duration = "60s"
   depends_on = [
     module.retail_app_eks,
     module.eks_addons
@@ -36,9 +36,10 @@ resource "helm_release" "argocd" {
           enabled = false  # We'll use port-forward for access
         }
         # Enable insecure mode for easier local access
-        extraArgs = [
-          "--insecure"
-        ]
+      configs = {
+        params = {
+          "server.insecure" = true
+        }
       }
       
       # Controller configuration
