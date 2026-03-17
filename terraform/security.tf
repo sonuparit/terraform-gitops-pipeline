@@ -23,6 +23,16 @@ resource "aws_security_group_rule" "internet_to_lb_https" {
   security_group_id = module.retail_app_eks.cluster_security_group_id
 }
 
+resource "aws_security_group_rule" "internet_to_lb_https" {
+  description       = "Allow HTTPS traffic from internet to LoadBalancer"
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = module.retail_app_eks.cluster_security_group_id
+}
+
 # Allow LoadBalancer health checks from AWS
 resource "aws_security_group_rule" "health_checks_to_lb" {
   description       = "Allow AWS health checks to LoadBalancer"
