@@ -1,4 +1,4 @@
-# This is just a yml file.
+# This is a yml file.
 
 replicaCount: 1
 image:
