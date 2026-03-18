@@ -1,5 +1,7 @@
 # AWS Containers Retail Sample - Catalog Service
 
+<!-- Test commit -->
+
 | Language | Persistence |
 | -------- | ----------- |
 | Go       | MySQL       |

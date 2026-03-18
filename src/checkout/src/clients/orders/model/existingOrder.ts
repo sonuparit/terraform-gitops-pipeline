@@ -28,15 +28,14 @@
  * Do not edit the class manually.
  */
 
-import { RequestFile } from '../api';
 import { OrderItem } from './orderItem';
-import { ShippingAddress } from './shippingAddress';
 
 export class ExistingOrder {
+  'email'?: string;
+  'firstName'?: string;
   'id'?: string;
-  'shippingAddress'?: ShippingAddress;
   'items'?: Array<OrderItem>;
-  'createdDate'?: Date;
+  'lastName'?: string;
 
   static discriminator: string | undefined = undefined;
 
@@ -45,6 +44,16 @@ export class ExistingOrder {
     baseName: string;
     type: string;
   }> = [
+    {
+      name: 'email',
+      baseName: 'email',
+      type: 'string',
+    },
+    {
+      name: 'firstName',
+      baseName: 'firstName',
+      type: 'string',
+    },
     {
       name: 'id',
       baseName: 'id',
@@ -56,19 +65,13 @@ export class ExistingOrder {
       type: 'Array<OrderItem>',
     },
     {
-      name: 'shippingAddress',
-      baseName: 'shippingAddress',
-      type: 'ShippingAddress',
+      name: 'lastName',
+      baseName: 'lastName',
+      type: 'string',
     },
-    {
-      name: 'createdDate',
-      baseName: 'createdDate',
-      type: 'Date',
-    }
   ];
 
   static getAttributeTypeMap() {
     return ExistingOrder.attributeTypeMap;
   }
 }
-

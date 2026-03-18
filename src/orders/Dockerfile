@@ -1,5 +1,5 @@
 # Build Stage
-FROM public.ecr.aws/amazonlinux/amazonlinux:2023 as build-env
+FROM public.ecr.aws/amazonlinux/amazonlinux:2023 AS build-env
 
 # We tell DNF not to install Recommends and Suggests packages, keeping our
 # installed set of packages as minimal as possible.
@@ -62,7 +62,7 @@ ENV SPRING_PROFILES_ACTIVE=prod
 WORKDIR /app
 USER appuser
 
-COPY ./ATTRIBUTION.md ./LICENSES.md
+# COPY ./ATTRIBUTION.md ./LICENSES.md
 COPY --chown=appuser:appuser --from=build-env /app.jar .
 
 EXPOSE 8080

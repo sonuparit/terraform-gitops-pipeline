@@ -18,34 +18,32 @@
 
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
 import { ICheckoutRepository } from './ICheckoutRepository';
-import { Redis } from 'ioredis';
+import { createClient, RedisClientType } from 'redis';
 
 @Injectable()
 export class RedisCheckoutRepository
   implements ICheckoutRepository, OnModuleDestroy
 {
-  private _client: Redis;
-  private _readClient: Redis;
+  private _client: RedisClientType;
+  private _readClient: RedisClientType;
 
   constructor(
     private url: string,
     private readerUrl: string,
   ) {}
 
-  private async buildClient(url: string) {
-    return new Redis(url);
-  }
-
   async client() {
     if (!this._client) {
-      this._client = await this.buildClient(this.url);
+      this._client = createClient({ url: this.url });
+      await this._client.connect();
     }
     return this._client;
   }
 
   async readClient() {
     if (!this._readClient) {
-      this._readClient = await this.buildClient(this.readerUrl);
+      this._readClient = createClient({ url: this.readerUrl });
+      await this._readClient.connect();
     }
     return this._readClient;
   }
@@ -71,12 +69,14 @@ export class RedisCheckoutRepository
   async get(key: string): Promise<string> {
     const client = await this.readClient();
 
+    //@ts-expect-error TODO: Change from redis client upgrade
     return client.get(key);
   }
 
   async set(key: string, value: string): Promise<string> {
     const client = await this.client();
 
+    //@ts-expect-error TODO: Change from redis client upgrade
     return client.set(key, value);
   }
 
