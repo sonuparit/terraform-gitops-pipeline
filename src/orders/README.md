@@ -1,10 +1,14 @@
 # AWS Containers Retail Sample - Orders Service
 
+<!-- GitOps Test: Multi-service deploy test - Orders -->
+
 | Language | Persistence |
 | -------- | ----------- |
-| Java     | PostgreSQL  |
+| Java     | MySQL       |
+| -------- | ----------- |
+| Java     | MySQL       |
 
-This service provides an API for storing orders. Data is stored in PostgreSQL.
+This service provides an API for storing orders. Data is stored in MySQL.
 
 ## Configuration
 
@@ -14,10 +18,10 @@ The following environment variables are available for configuring the service:
 | --------------------------------------------- | --------------------------------------------------------------------------------------- | ------------- |
 | `PORT`                                        | The port which the server will listen on                                                | `8080`        |
 | `RETAIL_CHECKOUT_PERSISTENCE_PROVIDER`        | The persistence provider to use, can be `in-memory` or `postgres`.                      | `in-memory`   |
-| `RETAIL_ORDERS_PERSISTENCE_ENDPOINT`          | The postgres database endpoint.                                                         | `""`          |
-| `RETAIL_ORDERS_PERSISTENCE_NAME`              | The postgres database name                                                              | `""`          |
-| `RETAIL_ORDERS_PERSISTENCE_USERNAME`          | Username to authenticate with postgres database.                                        | `""`          |
-| `RETAIL_ORDERS_PERSISTENCE_PASSWORD`          | Password to authenticate with postgres database.                                        | `""`          |
+| `RETAIL_ORDERS_PERSISTENCE_POSTGRES_ENDPOINT` | The postgres database endpoint.                                                         | `""`          |
+| `RETAIL_ORDERS_PERSISTENCE_POSTGRES_NAME`     | The postgres database name                                                              | `""`          |
+| `RETAIL_ORDERS_PERSISTENCE_POSTGRES_USERNAME` | Username to authenticate with postgres database.                                        | `""`          |
+| `RETAIL_ORDERS_PERSISTENCE_POSTGRES_PASSWORD` | Password to authenticate with postgres database.                                        | `""`          |
 | `RETAIL_ORDERS_MESSAGING_PROVIDER`            | The messaging provider to use to publish events. Can be `in-memory`, `sqs`, `rabbitmq`. | `"in-memory"` |
 | `RETAIL_ORDERS_MESSAGING_SQS_TOPIC`           | The name of the SQS topic to publish events to (SQS messaging provider)                 | `""`          |
 | `RETAIL_ORDERS_MESSAGING_RABBITMQ_ADDRESSES`  | Endpoints for RabbitMQ messaging provider, format `host:port`                           | `""`          |

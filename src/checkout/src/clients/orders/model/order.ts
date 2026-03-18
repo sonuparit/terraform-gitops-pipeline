@@ -30,11 +30,12 @@
 
 import { RequestFile } from '../api';
 import { OrderItem } from './orderItem';
-import { ShippingAddress } from './shippingAddress';
 
 export class Order {
-  'shippingAddress'?: ShippingAddress;
+  'email'?: string;
+  'firstName'?: string;
   'items'?: Array<OrderItem>;
+  'lastName'?: string;
 
   static discriminator: string | undefined = undefined;
 
@@ -44,19 +45,28 @@ export class Order {
     type: string;
   }> = [
     {
-      name: 'items',
-      baseName: 'items',
-      type: 'Array<OrderItem>'
+      name: 'email',
+      baseName: 'email',
+      type: 'string',
     },
     {
-      name: 'shippingAddress',
-      baseName: 'shippingAddress',
-      type: 'ShippingAddress'
-    }
+      name: 'firstName',
+      baseName: 'firstName',
+      type: 'string',
+    },
+    {
+      name: 'items',
+      baseName: 'items',
+      type: 'Array<OrderItem>',
+    },
+    {
+      name: 'lastName',
+      baseName: 'lastName',
+      type: 'string',
+    },
   ];
 
   static getAttributeTypeMap() {
     return Order.attributeTypeMap;
   }
 }
-
