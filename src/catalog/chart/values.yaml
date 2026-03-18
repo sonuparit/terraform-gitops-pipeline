@@ -2,9 +2,9 @@
 
 replicaCount: 1
 image:
-  repository: 626072240565.dkr.ecr.us-west-2.amazonaws.com/retail-store-catalog
+  repository: 623381633192.dkr.ecr.ap-south-1.amazonaws.com/retail-store-catalog
   pullPolicy: Always
-  tag: "db791a4"
+  tag: "0184936"
 imagePullSecrets:
   - name: regcred
 nameOverride: ""
