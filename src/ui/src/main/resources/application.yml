@@ -10,14 +10,14 @@ spring:
 
 retail:
   ui:
-    theme: dark
+    theme: default
     disable-demo-warnings: false
     product-images-path: # /mnt/products
     endpoints:
-      catalog:  http://localhost:8081
-      carts:  http://localhost:8082
-      checkout:  http://localhost:8085
-      orders:  http://localhost:8083
+      catalog: # http://localhost:8081
+      carts: # http://localhost:8082
+      checkout: # http://localhost:8085
+      orders: # http://localhost:8083
     chat:
       enabled: false
       temperature: 0.6
