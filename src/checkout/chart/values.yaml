@@ -2,7 +2,7 @@
 
 replicaCount: 1
 image:
-  repository: 623381633192.dkr.ecr.ap-south-1.amazonaws.com/retail-store-checkout
+  repository: public.ecr.aws/aws-containers/retail-store-sample-checkout
   pullPolicy: Always
   tag: "0184936"
 imagePullSecrets:
