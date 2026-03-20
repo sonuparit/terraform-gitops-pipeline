@@ -29,10 +29,10 @@ ingress:
     # Cert-manager annotations
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
   hosts:
-    - retail-store.iemafzalhassan.in
+    - retail-store.sonuparit.com
   tls:
     - hosts:
-        - retail-store.iemafzalhassan.in
+        - retail-store.sonuparit.com
       secretName: retail-store-tls
 
 # Application configuration
@@ -53,7 +53,7 @@ resources:
 
 # Metrics
 metrics:
-  enabled: true
+  enabled: false
   podAnnotations:
     prometheus.io/scrape: "true"
     prometheus.io/port: "8080"
@@ -62,7 +62,7 @@ metrics:
 # Cert Manager Configuration
 certManager:
   createClusterIssuer: true
-  email: iemafzalhassan@gmail.com
+  email: sonu.parit1@gmail.com
   clusterIssuerName: "letsencrypt-prod"
   server: "https://acme-v02.api.letsencrypt.org/directory"
   privateKeySecretName: "letsencrypt-prod-key" 
