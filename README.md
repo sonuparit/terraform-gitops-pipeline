@@ -20,15 +20,13 @@
 ## Table of Contents
 
 - [Quick Start](#-quick-start)
-- [️Architecture](#-architecture)
+- [App ️Architecture](#-architecture)
+- [️Infrastructure Architecture](#-infrastructure-architecture)
+- [How to Run](#-how-to)
 - [Prerequisites](#-prerequisites)
 - [Installation](#-installation)
-- [Deployment](#-deployment)
-- [GitOps Workflow](#-gitops-workflow)
-- [Monitoring](#-monitoring)
-- [Troubleshooting](#-troubleshooting)
 - [Cleanup](#-cleanup)
-- [Advanced Topics](#-advanced-topics)
+- [Troubleshooting](#-troubleshooting)
 
 ## Quick Start
 
@@ -46,6 +44,8 @@
 
 ### **Application Architecture**
 
+![Application Architecture](./docs/images/architecture.png)
+
 The retail store consists of 5 microservices working together:
 
 | Service      | Language           | Purpose                | Port |
@@ -55,8 +55,6 @@ The retail store consists of 5 microservices working together:
 | **Cart**     | Java (Spring Boot) | Shopping cart API      | 8082 |
 | **Orders**   | Java (Spring Boot) | Order management API   | 8083 |
 | **Checkout** | Node.js (NestJS)   | Checkout orchestration | 8084 |
-
-![Application Architecture](./docs/images/architecture.png)
 
 ### **Infrastructure Architecture**
 
@@ -83,9 +81,9 @@ graph LR
     G --> H[Deploy to EKS]
 ```
 
----
+## How to
 
-## We will run everything from an EC2 instance and I will call it as (DevOps Machine)
+### We will run everything from an EC2 instance and I will call it as (DevOps Machine)
 
 - Fire up an EC2 instance
 
@@ -133,7 +131,7 @@ aws eks list-clusters --region <your-region>
 
 ### Step 3: We will use `terraform` as IaC tool to build our platform
 
-> **1. initialize the terraform**
+**1. initialize the terraform**
 
 ```yml
 # initialze the terraform
@@ -145,7 +143,7 @@ terraform init
 
 ![alt text](<docs/screenshots/Screenshot (377).png>)
 
-> **2. Run terraform vpc module**
+**2. Run terraform vpc module**
 
 - Expected time to complete = 7-10 mins
 
@@ -165,7 +163,7 @@ This creates:
 ![alt text](<docs/screenshots/Screenshot (381).png>)
 
 
-> **3. Run terraform eks module**
+**3. Run terraform eks module**
 
 - Expected time to complete = 12-15 mins
 
@@ -183,7 +181,7 @@ terraform apply --target=module.retail_app_eks
 
 ![alt text](<docs/screenshots/Screenshot (388).png>)
 
-> **4. Run terraform addons module**
+**4. Run terraform addons module**
 
 ```yml
 terraform apply --target=module.eks_addons
@@ -200,7 +198,7 @@ This creates:
 
 - To view it on terminal we have to configure our kubectl to point to our cluster
 
-> **5. Run kubectl config command**
+**5. Run kubectl config command**
 
 ```yml
 aws eks update-kubeconfig --region ap-south-1 --name <your-cluster-name>
@@ -208,7 +206,7 @@ aws eks update-kubeconfig --region ap-south-1 --name <your-cluster-name>
 
 ![alt text](<docs/screenshots/Screenshot (396).png>)
 
-> **6. Finally run terraform apply to deploy the app**
+**6. Finally run terraform apply to deploy the app**
 
 ```yml
 terraform apply
@@ -220,7 +218,7 @@ This deploys:
 
 ![alt text](<docs/screenshots/Screenshot (399).png>)
 
-> **7. Now get all the resources to see what we have achieved so far**
+**7. Now get all the resources to see what we have achieved so far**
 
 ```yml
 kubectl get all -A
@@ -230,13 +228,13 @@ kubectl get all -A
 
 - we can see our app is not ready. It will take time because docker images are big
 
-> **8. Grab the loadbalancer url for our app**
+**8. Grab the loadbalancer url for our app**
 
 - Copy the url to browser, it will not show our app because load balancer takes time to configure, and also our apps are not ready.
 
 ![alt text](<docs/screenshots/Screenshot (409).png>)
 
-> **9.To see CD in action patch the service of ArgoCD Server as load balancer**
+**9.To see CD in action patch the service of ArgoCD Server as load balancer**
 
 ```yml
 kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
@@ -244,7 +242,7 @@ kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}
 
 ![alt text](<docs/screenshots/Screenshot (414).png>)
 
-> **10. Copy the loadbalancer url and paste it on your browser**
+**10. Copy the loadbalancer url and paste it on your browser**
 
 ```yml
 kubectl get svc -n argocd
@@ -253,7 +251,7 @@ kubectl get svc -n argocd
 
 - It will take some time to open up in browser
 
-> **11. We need ArgoCD initial password to access it**
+**11. We need ArgoCD initial password to access it**
 
 ```yml
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
@@ -262,34 +260,34 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 - Copy the password
 
-> **12. Open up ArgoCD loadbalancer, and login via `username = admin` and password**
+**12. Open up ArgoCD loadbalancer, and login via `username = admin` and password**
 
 ![alt text](<docs/screenshots/Screenshot (418).png>)
 
 - Don't forget to change the password in `user info`
 
-> **13. We can see our apps are healthy**
+**13. We can see our apps are healthy**
 
 ![alt text](<docs/screenshots/Screenshot (420).png>)
 
-> **14 We can verify in our terminal**
+**14 We can verify in our terminal**
 
 ```yml
 kubectl get pods -n retail-store
 ```
 ![alt text](<docs/screenshots/Screenshot (422).png>)
 
-> **15. Access you app now**
+**15. Access you app now**
 
 ![alt text](<docs/screenshots/Screenshot (424).png>)
 
 - You have successfully deployed a microservices app
 
-> **16. Go through your app**
+**16. Go through your app**
 
 ![alt text](<docs/screenshots/Screenshot (425).png>)
 
-> **17. Test the auto EKS Mode by terminating the EC2 instance**
+**17. Test the auto EKS Mode by terminating the EC2 instance**
 
 ![alt text](<docs/screenshots/Screenshot (439).png>)
 
@@ -307,21 +305,21 @@ kubectl get pods -n retail-store
 
 - And from ECR, ArgoCD will pull the images, and deploy it to our Cluster 
 
-> **18. Create an IAM user for gitops operation**
+**18. Create an IAM user for gitops operation**
 
 ![alt text](<docs/screenshots/Screenshot (449).png>)
 
-> **19. Attach ECR policies**
+**19. Attach ECR policies**
 
 ![alt text](<docs/screenshots/Screenshot (450).png>)
 
-> **20. Create CLI access keys for the user and save it**
+**20. Create CLI access keys for the user and save it**
 
 ![alt text](<docs/screenshots/Screenshot (452).png>)
 
 - We also need `Account-ID` and `region` copy them and save them too.
 
-> **21. Go to your GitHub repository → Settings → Secrets and variables → Actions**
+**21. Go to your GitHub repository → Settings → Secrets and variables → Actions**
 
 ![alt text](<docs/screenshots/Screenshot (457).png>)
 
@@ -340,23 +338,23 @@ kubectl get pods -n retail-store
 
 *[Note!] You might not see Actions tab in your github repository, because by default GitHub looks into main branch. But that's not an issue, when we push our code in gitops branch, workflows will auto run.*
 
-> **22. Colne the repo to your local machine and switch to gitops branch**
+**22. Colne the repo to your local machine and switch to gitops branch**
 
 - You can also perfrom this action on your cloud machine
 
 ![alt text](<docs/screenshots/Screenshot (443).png>)
 
-> **23. Make changes into your src file for every service**
+**23. Make changes into your src file for every service**
 
 ![alt text](<docs/screenshots/Screenshot (465).png>)
 
 ![alt text](<docs/screenshots/Screenshot (469).png>)
 
-> **24. Push the changes to github**
+**24. Push the changes to github**
 
 ![alt text](<docs/screenshots/Screenshot (472).png>)
 
-> **25. Go to your github repo, and there we have Actions tab (Open it)**
+**25. Go to your github repo, and there we have Actions tab (Open it)**
 
 - We can see our CI has triggered 
 
@@ -364,11 +362,11 @@ kubectl get pods -n retail-store
 
 - Once it's done
 
-> **26. Go to your ECR console, we can see, we have 5 images**
+**26. Go to your ECR console, we can see, we have 5 images**
 
 ![alt text](<docs/screenshots/Screenshot (481).png>)
 
-> **27. Now we need to change our ArgoCD config to look at our gitops branch**
+**27. Now we need to change our ArgoCD config to look at our gitops branch**
 
 - Go to your DevOps machine change the directory to:
 
@@ -384,15 +382,15 @@ kubectly apply -f . -n argocd
 
 ![alt text](<docs/screenshots/Screenshot (491).png>)
 
-> **28. Once applied we can see our ArgoCD has started our CD phase**
+**28. Once applied we can see our ArgoCD has started our CD phase**
 
 ![alt text](<docs/screenshots/Screenshot (492).png>)
 
-> **29. We can verify that in our terminal**
+**29. We can verify that in our terminal**
 
 ![alt text](<docs/screenshots/Screenshot (493).png>)
 
-> **30. Once sync is complete, open your app**
+**30. Once sync is complete, open your app**
 
 ![alt text](<docs/screenshots/Screenshot (499).png>)
 
@@ -402,8 +400,6 @@ kubectly apply -f . -n argocd
 ### Congratulations you have successfully completed full CI-CD with IaC Provisioning
 
 ## Cleanup
-
-### **Destroy Infrastructure**
 
 ```yml
 cd terraform/
@@ -444,7 +440,7 @@ terraform destroy --auto-approve
 
 ### **Useful Commands**
 
-```bash
+```yml
 # Get cluster info
 kubectl cluster-info
 
@@ -465,7 +461,7 @@ kubectl get events -n retail-store
 
 ### **Debug Commands**
 
-```bash
+```yml
 # Check all resources
 kubectl get all -A
 
