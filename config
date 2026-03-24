@@ -1,15 +1,15 @@
 # Permissions to IAM user to create EKS
 AdministratorAccess
 
-# Permissions to IAM user to push to ECR
+# Permissions to IAM user to create and push to ECR
 AmazonEC2ContainerRegistryFullAccess
 AmazonElasticContainerRegistryPublicPowerUser
 
 # Variables used in CI Pipeline
-AWS_ACCESS_KEY_ID
-AWS_ACCOUNT_ID
-AWS_REGION
-AWS_SECRET_ACCESS_KEY
+AWS_ACCESS_KEY_ID	    :
+AWS_SECRET_ACCESS_KEY	:
+AWS_ACCOUNT_ID		    :
+AWS_REGION			    :
 
 # aws cli config
 aws eks update-kubeconfig --region ap-south-1 --name <your-cluster-name>

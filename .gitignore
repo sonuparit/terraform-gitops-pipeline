@@ -22,7 +22,6 @@ Chart.lock
 .nx/cache
 .nx/workspace-data
 
-screenshots
 # Devenv
 .devenv*
 devenv.local.nix
