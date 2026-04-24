@@ -9,7 +9,7 @@ AmazonElasticContainerRegistryPublicPowerUser
 AWS_ACCESS_KEY_ID	    :
 AWS_SECRET_ACCESS_KEY	:
 AWS_ACCOUNT_ID		    :
-AWS_REGION			    :
+AWS_REGION			      :
 
 # aws cli config
 aws eks update-kubeconfig --region ap-south-1 --name <your-cluster-name>
