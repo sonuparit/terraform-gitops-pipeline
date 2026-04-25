@@ -1,7 +1,8 @@
 # 🚀 End-to-End IaC + GitOps Pipeline (EKS)
 **Understanding how real DevOps systems behave — not just how to run them.**
 
-> [!NOTE] **Learning-focused repository**\
+> [!NOTE]  
+> **Learning-focused repository**\
 > This project is built to deeply understand how a production-grade DevOps system works end-to-end using AWS, Terraform, CI/CD, and GitOps principles.
 
 ## 📚 Table of Contents
