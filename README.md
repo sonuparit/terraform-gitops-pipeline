@@ -1,8 +1,12 @@
 # 🚀 Reverse Engineering Terraform + GitOps Pipeline (EKS)
 
-**Reverse-engineered, modularized, and extended a production-style DevOps system to deeply understand and control its behavior.**
+> [!NOTE]
+> This project is based on an existing application that I reverse-engineered and enhanced — [original repo](https://github.com/aws-containers/retail-store-sample-app)
 
-### 🏗️ My Implementation:
+**1. Reverse-engineered and modularized the `Terraform`.**\
+**2. Extended the system with GitOps based CI pipeline from scratch.**
+
+### 🏗️ My Implementation
 
 > Before implementing the system, I mapped out the full workflow to understand how each component interacts.
 
@@ -14,8 +18,8 @@
 - **[Overview](#-overview)**
 - **[What I Did Differently](#-what-i-did-differently)**
 - **[Architectural Decisions (ADR)](#-architectural-decisions-adr)**
-- **[Challenges & Solutions](#️-challenges--solutions)**
 - **[Core Implementation](#️-core-implementation)**
+- **[Challenges & Solutions](#️-challenges--solutions)**
 - **[Outcome](#-outcome)**
 - **[Key Learnings](#-key-learnings)**
 - **[Why This Project Is Important](#-why-this-project-is-important)**
@@ -79,69 +83,6 @@ Why:\
 
 Result:\
 **More predictable and controlled release process.**
-
-## ⚔️ Challenges & Solutions
-
-### 🏗️ Terraform
-
-**🔹Challenge: Lack of visibility during execution**
--   *Running **`terraform apply`** was provisioning everything, but I had no visibility into what was being created or in what order. It felt like things were happening behind the scenes without context.*
-
-**🔹Solution:**
--   *I broke the setup into smaller modules (**`VPC → EKS → Add-ons → App deployment`**) and applied them **`step-by-step`**. This made dependencies, resource creation, and execution flow much clearer.*
-
-
-**🔹Challenge: Understanding resource dependencies**
--   *It wasn’t obvious how different AWS resources were connected or why certain **`components were required before others`**.*
-
-**🔹Solution:**
--   *By applying **`Terraform in stages`** and observing the state after each step, I was able to **`map out the dependency chain`** and understand how the infrastructure is actually built.*
-
----
-
-### 🔁 GitOps
-
-GitOps took significantly more effort than I initially expected.
-
-
-**🔹Challenge: Detecting changed services**
--   *I needed the pipeline to rebuild only the services that actually changed, instead of rebuilding everything on every push.*
-
-**🔹Solution:**
--   *Implemented change detection using **`git diff`** and filtered changes based on service directories (src/<service>), reducing unnecessary builds.*
-
-**🔹Challenge: Inefficient image builds**
--   *Initially, I was building Docker images **`one-by-one`** for all services, which was slow and inefficient.*
-
-**🔹Solution:**
--   *Switched to a **`matrix-based strategy`** in GitHub Actions to build only changed services in parallel, improving speed and scalability.*
-
-**🔹Challenge: ECR authentication and repository handling**
--   *Faced issues with AWS authentication and pipeline failures when the ECR repository didn’t exist.*
-
-**🔹Solution:**
--   Configured secure AWS access using GitHub Secrets and added logic to create the ECR repository if it doesn’t exist, making deployments more reliable.
-
-**🔹Challenge: CI and ArgoCD triggering conflicts**
--   *Initially, ArgoCD was pointed to the **`entire repository`**, causing both CI and ArgoCD to react to the same changes and trigger simultaneously.*
-
-**🔹Solution:**
--   *Restricted ArgoCD to watch only the **`Helm chart path`**, creating a clear separation:*
-
-    -   CI → builds and updates images
-    -   ArgoCD → handles deployment
-
-### 🔧 Additional Improvements
-
-- Introduced **AWS KMS integration** to enable encryption for Kubernetes Secrets, ensuring sensitive data is securely stored in etcd  
-- Added **Cert Manager** and **Nginx Ingress Controller** via Terraform add-ons  
-- Implemented **retry logic for image push** to handle race conditions
-
----
-
-### 💡 Reflection
-
-*Each of these challenges helped me move from just **running tools to actually understanding** how the system behaves in real conditions.*
 
 ## ⚙️ Core Implementation
 
@@ -209,6 +150,79 @@ This separation ensures:
 - Development work doesn’t accidentally deploy
 - Deployment is intentional and controlled
 
+## ⚔️ Challenges & Solutions
+
+### 🏗️ Terraform
+
+**🔹Challenge: Lack of visibility during execution**
+
+- *Running **`terraform apply`** was provisioning everything, but I had no visibility into what was being created or in what order. It felt like things were happening behind the scenes without context.*
+
+**🔹Solution:**
+
+- *I broke the setup into smaller modules (**`VPC → EKS → Add-ons → App deployment`**) and applied them **`step-by-step`**. This made dependencies, resource creation, and execution flow much clearer.*
+
+**🔹Challenge: Understanding resource dependencies**
+
+- *It wasn’t obvious how different AWS resources were connected or why certain **`components were required before others`**.*
+
+**🔹Solution:**
+
+- *By applying **`Terraform in stages`** and observing the state after each step, I was able to **`map out the dependency chain`** and understand how the infrastructure is actually built.*
+
+---
+
+### 🔁 GitOps
+
+GitOps took significantly more effort than I initially expected.
+
+**🔹Challenge: Detecting changed services**
+
+- *I needed the pipeline to rebuild only the services that actually changed, instead of rebuilding everything on every push.*
+
+**🔹Solution:**
+
+- *Implemented change detection using **`git diff`** and filtered changes based on service directories (src/<service>), reducing unnecessary builds.*
+
+**🔹Challenge: Inefficient image builds**
+
+- *Initially, I was building Docker images **`one-by-one`** for all services, which was slow and inefficient.*
+
+**🔹Solution:**
+
+- *Switched to a **`matrix-based strategy`** in GitHub Actions to build only changed services in parallel, improving speed and scalability.*
+
+**🔹Challenge: ECR authentication and repository handling**
+
+- *Faced issues with AWS authentication and pipeline failures when the ECR repository didn’t exist.*
+
+**🔹Solution:**
+
+- Configured secure AWS access using GitHub Secrets and added logic to create the ECR repository if it doesn’t exist, making deployments more reliable.
+
+**🔹Challenge: CI and ArgoCD triggering conflicts**
+
+- *Initially, ArgoCD was pointed to the **`entire repository`**, causing both CI and ArgoCD to react to the same changes and trigger simultaneously.*
+
+**🔹Solution:**
+
+- *Restricted ArgoCD to watch only the **`Helm chart path`**, creating a clear separation:*
+
+  - CI → builds and updates images
+  - ArgoCD → handles deployment
+
+### 🔧 Additional Improvements
+
+- Introduced **AWS KMS integration** to enable encryption for Kubernetes Secrets, ensuring sensitive data is securely stored in etcd  
+- Added **Cert Manager** and **Nginx Ingress Controller** via Terraform add-ons  
+- Implemented **retry logic for image push** to handle race conditions
+
+---
+
+### 💡 Reflection
+
+*Each of these challenges helped me move from just **running tools to actually understanding** how the system behaves in real conditions.*
+
 ## 📊 Outcome
 
 - Successfully **deployed the entire system** end-to-end
@@ -240,19 +254,19 @@ I’m currently **rebuilding this system end-to-end** to gain full control over 
 - Containerization (**Docker**)
 - **Helm chart design and customization**
 - **Kubernetes deployment with persistent storage**
-    - via **Helmfile**
-    - via **ArgoCD**
+  - via **Helmfile**
+  - via **ArgoCD**
 - **CI/CD** pipelines
-    - **GitHub Actions + ArgoCD**
-    - **GitLab CI**
-    - **Jenkins**
+  - **GitHub Actions + ArgoCD**
+  - **GitLab CI**
+  - **Jenkins**
 - **Notifications** and alerting
-    - **Slack**
-    - **Email**
+  - **Slack**
+  - **Email**
 - **Terraform from scratch** (fully custom implementation)
 - **Observability and monitoring**
-    - **Prometheus**
-    - **Grafana**
+  - **Prometheus**
+  - **Grafana**
 
 👉 repo: **retail-store-reverse-engineered [(know more)](https://github.com/sonuparit/retail-store-reverse-engineered)**
 
